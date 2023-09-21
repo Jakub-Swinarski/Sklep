@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\ResetTokenIsGoodRequest;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -31,7 +28,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $user = $this->userRepository->findByUsername($data['username']);
+        $user = User::where("username",'=',$data['username'])->first();
 
         if ($user === null) {
             throw ValidationException::withMessages(['data' => ["Dane są niepoprawne"]]);
@@ -62,8 +59,8 @@ class AuthController extends Controller
         $user->token = Str::random(10);
 
         $user->save();
-        event(new Registered($user));
         $user->sendEmailVerificationNotification();
+        event(new Registered($user));
         return $user;
     }
 

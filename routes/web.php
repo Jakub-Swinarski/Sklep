@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +17,21 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::get('login',function (){
+    return view('login');
+});
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::post('/register',[\App\Http\Controllers\AuthController::class, 'register']);
+Route::get('/token', function (){
+    $token = csrf_token();
+    return $token;
+});
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/');
+})->middleware('signed')->name('verification.verify');
