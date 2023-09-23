@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -41,10 +42,14 @@ class AuthController extends Controller
         auth()->setUser($user);
 
         return [
+            '_token'=> csrf_token(),
             'token' => Crypt::encryptString("authorization_token:" . auth()->id()),
             'user' => auth()->user()
         ];
 
+    }
+    public function logout(){
+        auth()->logout();
     }
 
     public function register(RegisterRequest $request)
@@ -62,6 +67,21 @@ class AuthController extends Controller
         $user->sendEmailVerificationNotification();
         event(new Registered($user));
         return $user;
+    }
+    public function delete(DeleteUserRequest $request){
+        $data = $request->validated();
+
+        $user = auth()->user();
+
+        $doesPasswordMatch = Hash::check($data['password'], $user->getAuthPassword());
+
+        if (!$doesPasswordMatch) {
+            throw ValidationException::withMessages(['data' => ['password' => ['Złe hasło.']]]);
+        }
+
+        DB::table('users')
+            ->where('id', '=' , auth()->id())
+            ->delete();
     }
 
 

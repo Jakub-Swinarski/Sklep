@@ -14,24 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('login',function (){
-    return view('login');
-});
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/register',[\App\Http\Controllers\AuthController::class, 'register']);
-Route::get('/token', function (){
-    $token = csrf_token();
-    return $token;
-});
+Route::get('/getUser', [\App\Http\Controllers\AuthController::class, 'getUser'])->middleware('auth');
+Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    return redirect('/');
-})->middleware('signed')->name('verification.verify');
+})->middleware('signed','auth')->name('verification.verify');
