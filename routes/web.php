@@ -27,8 +27,11 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
 })->middleware('signed','auth')->name('verification.verify');
 
-Route::post('/forgot-password', [\App\Http\Controllers\AuthController::class, 'emailPasswordReset'])
+Route::post('/forgotPassword', [\App\Http\Controllers\AuthController::class, 'emailPasswordReset'])
     ->name('password.email');
-Route::post('/reset-password',[\App\Http\Controllers\AuthController::class, 'resetPassword']);
+Route::get('/resetPassword/{token}', function (string $token) {
+    return ['token' => $token];
+})->middleware('guest')->name('password.reset');
+Route::post('/resetPassword',[\App\Http\Controllers\AuthController::class, 'resetPassword']);
 Route::get('/logout',[\App\Http\Controllers\AuthController::class, 'logout'])
     ->middleware('auth');

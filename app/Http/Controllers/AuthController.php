@@ -34,7 +34,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $user = User::where("username",'=',$data['username'])->first();
+        $user = User::where("username", '=', $data['username'])->first();
 
         if ($user === null) {
             throw ValidationException::withMessages(['data' => ["Dane są niepoprawne"]]);
@@ -47,13 +47,14 @@ class AuthController extends Controller
         auth()->setUser($user);
 
         return [
-            '_token'=> csrf_token(),
             'token' => Crypt::encryptString("authorization_token:" . auth()->id()),
             'user' => auth()->user()
         ];
 
     }
-    public function logout(){
+
+    public function logout()
+    {
         auth()->logout();
     }
 
@@ -73,7 +74,9 @@ class AuthController extends Controller
         event(new Registered($user));
         return $user;
     }
-    public function delete(DeleteUserRequest $request){
+
+    public function delete(DeleteUserRequest $request)
+    {
         $data = $request->validated();
 
         $user = auth()->user();
@@ -85,27 +88,33 @@ class AuthController extends Controller
         }
 
         DB::table('users')
-            ->where('id', '=' , auth()->id())
+            ->where('id', '=', auth()->id())
             ->delete();
     }
-    public function emailPasswordReset (EmailRequest $request){
+
+    public function emailPasswordReset(EmailRequest $request)
+    {
+
         $request->validated();
+
         $status = Password::sendResetLink(
             $request->only('email')
         );
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+            ? ['status' => __($status)]
+            : ['email' => ($status)];
     }
-    public function resetPassword (ResetPasswordRequest $request){
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
         $request->validated();
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+                ]);
 
                 $user->save();
 
@@ -114,7 +123,7 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+            ? ['status' => __($status)]
+            : ['email' => __($status)];
     }
 }
