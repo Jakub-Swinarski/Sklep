@@ -60,19 +60,24 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $data = $request->validated();
-        $user = new User();
-        $user->username = $data['username'];
-        $data['password'] = Hash::make($data['password']);
-        $user->password = $data['password'];
-        $user->email = $data['email'];
-        $user->is_admin = $data['is_admin'];
-        $user->token = Str::random(10);
+        DB::transaction(function ()use ($request){
+            $data = $request->validated();
+            $user = new User();
+            $user->username = $data['username'];
+            $data['password'] = Hash::make($data['password']);
+            $user->password = $data['password'];
+            $user->email = $data['email'];
+            $user->is_admin = $data['is_admin'];
+            $user->token = Str::random(10);
 
-        $user->save();
-        $user->sendEmailVerificationNotification();
-        event(new Registered($user));
-        return $user;
+            $user->save();
+            $user->notify(new VerifyEmailAlternative());
+            return [
+                'token' => Crypt::encryptString("authorization_token:" . auth()->id()),
+                'user' => $user
+            ];
+        });
+
     }
 
     public function delete(DeleteUserRequest $request)
