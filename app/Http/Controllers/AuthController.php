@@ -7,8 +7,9 @@ use App\Http\Requests\EmailRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Notifications\VerifyEmailAlternative;
+use App\Services\EmailVerificationService;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,31 @@ use Illuminate\Validation\ValidationException;
  */
 class AuthController extends Controller
 {
+    private EmailVerificationService $emailVerificationService;
+
+    public function __construct(EmailVerificationService $evs)
+    {
+        $this->emailVerificationService = $evs;
+    }
+
+    public function acceptEmail(string $uuid)
+    {
+        DB::transaction(function() use ($uuid) {
+            $user = $this->emailVerificationService->checkAttempt($uuid);
+
+            if ($user === false) {
+                abort(422, "Invalid link");
+            }
+
+            $user->email_verified_at = now();
+            $user->save();
+
+            $this->emailVerificationService->deleteAttempt($uuid);
+        });
+
+        return redirect()->to(env("FRONTEND_URL") . "/register/accepted");
+    }
+
     public function getUser()
     {
         return auth()->id();
