@@ -21,11 +21,14 @@ Route::get('/getUser', [\App\Http\Controllers\AuthController::class, 'getUser'])
 
 Route::get('email/{uuid}', [\App\Http\Controllers\AuthController::class, 'acceptEmail'])->name('verification.verify');
 
-Route::post('/forgotPassword', [\App\Http\Controllers\AuthController::class, 'emailPasswordReset'])
+Route::post('/forgotPassword', [\App\Http\Controllers\UserController::class, 'emailPasswordReset'])
     ->name('password.email');
 Route::get('/resetPassword/{token}', function (string $token) {
-    return ['token' => $token];
+    $email = $_GET['email'];
+    $email = base64_encode($email);
+    return redirect()->to(url(env("FRONTEND_URL") . "/reset/password/$token/email/$email"));
 })->middleware('guest')->name('password.reset');
-Route::post('/resetPassword',[\App\Http\Controllers\AuthController::class, 'resetPassword']);
+Route::post('/resetPassword',[\App\Http\Controllers\UserController::class, 'resetPassword']);
 Route::get('/logout',[\App\Http\Controllers\AuthController::class, 'logout'])
     ->middleware('auth');
+Route::put('/changePassword',[\App\Http\Controllers\UserController::class, 'changePassword'])->middleware('auth');

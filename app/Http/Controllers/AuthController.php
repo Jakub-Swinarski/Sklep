@@ -50,7 +50,7 @@ class AuthController extends Controller
 
     public function getUser()
     {
-        return auth()->id();
+        return auth()->user();
     }
 
     /**
@@ -121,40 +121,5 @@ class AuthController extends Controller
         DB::table('users')
             ->where('id', '=', auth()->id())
             ->delete();
-    }
-
-    public function emailPasswordReset(EmailRequest $request)
-    {
-
-        $request->validated();
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? ['status' => __($status)]
-            : ['email' => ($status)];
-    }
-
-    public function resetPassword(ResetPasswordRequest $request)
-    {
-        $request->validated();
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ]);
-
-                $user->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        return $status === Password::PASSWORD_RESET
-            ? ['status' => __($status)]
-            : ['email' => __($status)];
     }
 }
