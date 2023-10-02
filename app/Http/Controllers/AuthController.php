@@ -63,11 +63,11 @@ class AuthController extends Controller
         $user = User::where("username", '=', $data['username'])->first();
 
         if ($user === null) {
-            throw ValidationException::withMessages(['data' => ["Dane są niepoprawne"]]);
+            throw ValidationException::withMessages(['data' => ["Dane są niepoprawne1"]]);
         }
 
         if (!Hash::check($data['password'], $user->password)) {
-            throw ValidationException::withMessages(['data' => ["Dane są niepoprawne"]]);
+            throw ValidationException::withMessages(['data' => ["Dane są niepoprawne2"]]);
         }
 
         auth()->setUser($user);

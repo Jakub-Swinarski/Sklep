@@ -60,7 +60,7 @@ class UserController extends Controller
         if (Hash::check($data['old_password'], $user->getAuthPassword())) {
             DB::table('users')
                 ->where('id', auth()->id())
-                ->update(['password' => $data['new_password']]);
+                ->update(['password' => Hash::make($data['new_password'])]);
         }
         else
             throw ValidationException::withMessages(['data' => ["Hasło jest nieprawidłowe"]]);
