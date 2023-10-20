@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeDescriptionRequest;
+use App\Http\Requests\ChangeNameRequest;
+use App\Http\Requests\ChangePriceRequest;
 use App\Http\Requests\changeSupplyRequest;
+use App\Http\Requests\DeleteProductRequest;
+use App\Http\Requests\DeleteRatingRequest;
 use App\Http\Requests\GetProductRequest;
 use App\Http\Requests\NewProductRequest;
 use Exception;
@@ -22,6 +27,10 @@ class ProductController extends Controller
             ->leftJoin('products_products_categories', function (JoinClause $join) {
                 $join->on('id', '=', 'product_id');
                 $join->leftJoin('products_categories', 'category_id', '=', 'id');
+            })
+            ->leftJoin('product_size',function (JoinClause $join){
+                $join->on('product_id', '=', 'id');
+                $join->leftJoin('size','size_id','=','id');
             })
             ->get();
     }
@@ -85,6 +94,38 @@ class ProductController extends Controller
             ->where('id','=', $data['product_id'])
             ->update([
                 'supply' => $data['supply']
+            ]);
+    }
+    public function changeName (ChangeNameRequest $request){
+        $data = $request->validated();
+        DB::table('products')
+            ->where('id', '=', $data['product_id'])
+            ->update([
+                'name' => $data['name']
+            ]);
+    }
+    public function changeDescription(ChangeDescriptionRequest $request){
+        $data = $request->validated();
+        DB::table('products')
+            ->where('id', '=', $data['product_id'])
+            ->update([
+                'description' => $data['description']
+            ]);
+    }
+    public function changePrice (ChangePriceRequest$request){
+        $data = $request->validated();
+        DB::table('products')
+            ->where('id', '=', $data['product_id'])
+            ->update([
+                'description' => $data['description']
+            ]);
+    }
+    public function deleteProduct (DeleteProductRequest $request) {
+        $data = $request->validated();
+        DB::table('products')
+            ->where('id', '=', $data['product_id'])
+            ->update([
+                'is_deleted' => true
             ]);
     }
 }
