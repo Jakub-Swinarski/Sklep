@@ -120,6 +120,8 @@ class AuthController extends Controller
 
         DB::table('users')
             ->where('id', '=', auth()->id())
-            ->delete();
+            ->update([
+                'is_deleted' => true
+            ]);
     }
 }

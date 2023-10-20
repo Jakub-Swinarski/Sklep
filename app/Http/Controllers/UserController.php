@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ChangeUsernameRequest;
+use App\Http\Requests\DeleteUserRequest;
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\NewEmailRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
@@ -64,6 +67,24 @@ class UserController extends Controller
         }
         else
             throw ValidationException::withMessages(['data' => ["Hasło jest nieprawidłowe"]]);
+    }
+    public function changeEmail(NewEmailRequest $request){
+        $data = $request->validated();
+        if ( Hash::check($data['password'], auth()->user()->getAuthPassword())){
+            DB::table('users')
+                ->where('id','=', auth()->id())
+                ->update([
+                    'email' => $data['email']
+                ]);
+        }
+    }
+    public function changeUsername(ChangeUsernameRequest $request){
+        $data = $request->validated();
+        DB::table('users')
+            ->where('id', '=', $data['user_id'])
+            ->update([
+                'username' => $data['username']
+            ]);
     }
 
 }
