@@ -16,9 +16,16 @@ return new class extends Migration {
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->integer('rating');
             $table->string('heading')->nullable();
             $table->text('description')->nullable();
+            $table->date('when')->useCurrent();
+            $table->boolean('is_edited')->default(false);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
