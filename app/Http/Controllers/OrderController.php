@@ -7,7 +7,7 @@ use App\Http\Requests\EditOrderRequest;
 use App\Http\Requests\GetOrderRequest;
 use App\Http\Requests\GetUserOrdersRequest;
 use App\Http\Requests\NewOrderRequest;
-use Illuminate\Http\Request;
+
 
 class OrderController extends Controller
 {
