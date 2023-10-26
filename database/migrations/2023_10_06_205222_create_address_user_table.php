@@ -16,7 +16,7 @@ return new class extends Migration {
                 ->references('id')
                 ->on('users')
                 ->onDelete('CASCADE');
-            $table->foreignId('address')
+            $table->foreignId('address_id')
                 ->references('id')
                 ->on('address')
                 ->onDelete('CASCADE');

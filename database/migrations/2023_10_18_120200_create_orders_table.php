@@ -26,8 +26,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('invoices')
                 ->onDelete('cascade');
-            $table->integer('products');
-
             $table->timestamps();
         });
     }
