@@ -22,7 +22,13 @@ class EditAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['string','min:3','max:255'],
+            'surname' =>['string','min:3','max:255'],
+            'address'=>['string','min:3','max:255'],
+            'city'=>['string','min:3','max:255'],
+            'zipcode'=>['integer','min:5','max:5'],
+            'number'=>['integer','min:9','max:9'],
+            'address_id'=>['integer','exists:address.id']
         ];
     }
 }

@@ -22,7 +22,8 @@ class ChangePriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => ['required', 'integer', 'exists:products'],
+            'price' => ['required','integer']
         ];
     }
 }

@@ -112,7 +112,7 @@ class ProductController extends Controller
                 'description' => $data['description']
             ]);
     }
-    public function changePrice (ChangePriceRequest$request){
+    public function changePrice (ChangePriceRequest $request){
         $data = $request->validated();
         DB::table('products')
             ->where('id', '=', $data['product_id'])

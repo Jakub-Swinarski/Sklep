@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_of_delivery')
+            $table->foreignId('type_of_delivery_id')
                 ->references('id')
                 ->on('type_of_delivery')
                 ->onDelete('cascade');

@@ -39,6 +39,7 @@ Route::prefix('user')->group(function () {
         Route::put('/password', [\App\Http\Controllers\UserController::class, 'changePassword']);
         Route::put('/email', [\App\Http\Controllers\UserController::class, 'changeEmail']);
         Route::put('/username', [\App\Http\Controllers\UserController::class, 'changeUsername']);
+        Route::get('/all',[\App\Http\Controllers\UserController::class,'getAllUsers']);
     });
 });
 Route::middleware('auth')->group(function () {

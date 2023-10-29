@@ -22,7 +22,7 @@ class DeleteAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'address_id'=>['integer','exists:address']
         ];
     }
 }

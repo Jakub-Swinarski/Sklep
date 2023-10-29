@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ChangeUsernameRequest;
-use App\Http\Requests\DeleteUserRequest;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\NewEmailRequest;
 use App\Http\Requests\ResetPasswordRequest;
@@ -85,6 +84,9 @@ class UserController extends Controller
             ->update([
                 'username' => $data['username']
             ]);
+    }
+    public function getAllUsers(){
+        return DB::table('users')->get();
     }
 
 }

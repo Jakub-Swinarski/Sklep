@@ -98,8 +98,9 @@ class AddressController extends Controller
     }
     public function getUserAddress(GetUserAddressRequest $request){
         $data = $request->validated();
-        return DB::table('address')
-            ->where('id', '=', $data['address_id'])
+        return DB::table('address_user', 'au')
+            ->where('user_id', '=', $data['user_id'])
+            ->leftJoin('address','au.address_id','=', 'address.id')
             ->get();
     }
 }

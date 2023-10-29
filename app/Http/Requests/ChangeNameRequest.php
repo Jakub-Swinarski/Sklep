@@ -22,7 +22,8 @@ class ChangeNameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => ['required', 'integer', 'exists:products'],
+            'name' => ['required','string','min:3','max:255']
         ];
     }
 }
