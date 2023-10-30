@@ -20,8 +20,6 @@ class UserController extends Controller
 {
     public function emailPasswordReset(EmailRequest $request)
     {
-
-
         $request->validated();
 
         $status = Password::sendResetLink(
@@ -63,21 +61,24 @@ class UserController extends Controller
             DB::table('users')
                 ->where('id', auth()->id())
                 ->update(['password' => Hash::make($data['new_password'])]);
-        }
-        else
+        } else
             throw ValidationException::withMessages(['data' => ["Hasło jest nieprawidłowe"]]);
     }
-    public function changeEmail(NewEmailRequest $request){
+
+    public function changeEmail(NewEmailRequest $request)
+    {
         $data = $request->validated();
-        if ( Hash::check($data['password'], auth()->user()->getAuthPassword())){
+        if (Hash::check($data['password'], auth()->user()->getAuthPassword())) {
             DB::table('users')
-                ->where('id','=', auth()->id())
+                ->where('id', '=', auth()->id())
                 ->update([
                     'email' => $data['email']
                 ]);
         }
     }
-    public function changeUsername(ChangeUsernameRequest $request){
+
+    public function changeUsername(ChangeUsernameRequest $request)
+    {
         $data = $request->validated();
         DB::table('users')
             ->where('id', '=', $data['user_id'])
@@ -85,7 +86,9 @@ class UserController extends Controller
                 'username' => $data['username']
             ]);
     }
-    public function getAllUsers(){
+
+    public function getAllUsers()
+    {
         return DB::table('users')->get();
     }
 

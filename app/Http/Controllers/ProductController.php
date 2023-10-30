@@ -28,9 +28,9 @@ class ProductController extends Controller
                 $join->on('id', '=', 'product_id');
                 $join->leftJoin('products_categories', 'category_id', '=', 'id');
             })
-            ->leftJoin('product_size',function (JoinClause $join){
+            ->leftJoin('product_size', function (JoinClause $join) {
                 $join->on('product_id', '=', 'id');
-                $join->leftJoin('size','size_id','=','id');
+                $join->leftJoin('size', 'size_id', '=', 'id');
             })
             ->get();
     }
@@ -47,8 +47,8 @@ class ProductController extends Controller
                     'supply' => $data['supply'],
                     'description' => $data['description']
                 ]);
-            if (isset($data['images'])){
-                foreach ($data['images'] as $image){
+            if (isset($data['images'])) {
+                foreach ($data['images'] as $image) {
                     DB::table('products_images')
                         ->insert([
                             'product_id' => $product_id,
@@ -56,10 +56,10 @@ class ProductController extends Controller
                         ]);
                 }
             }
-            if (isset($data['categories'])){
-                foreach ($data['categories'] as $category){
+            if (isset($data['categories'])) {
+                foreach ($data['categories'] as $category) {
                     $category_id = DB::table('products_categories')
-                        ->where('name', '=',$category)
+                        ->where('name', '=', $category)
                         ->first();
                     DB::table('products_products_categories')
                         ->insert([
@@ -68,7 +68,7 @@ class ProductController extends Controller
                         ]);
                 }
             }
-            if (isset($data['newCategories'])){
+            if (isset($data['newCategories'])) {
                 foreach ($data['newCategories'] as $category) {
                     $category_id = DB::table('products_categories')
                         ->insertGetId([
@@ -88,15 +88,19 @@ class ProductController extends Controller
         }
         return true;
     }
-    public function changeSupply (changeSupplyRequest $request){
+
+    public function changeSupply(changeSupplyRequest $request)
+    {
         $data = $request->validated();
         DB::table('products')
-            ->where('id','=', $data['product_id'])
+            ->where('id', '=', $data['product_id'])
             ->update([
                 'supply' => $data['supply']
             ]);
     }
-    public function changeName (ChangeNameRequest $request){
+
+    public function changeName(ChangeNameRequest $request)
+    {
         $data = $request->validated();
         DB::table('products')
             ->where('id', '=', $data['product_id'])
@@ -104,7 +108,9 @@ class ProductController extends Controller
                 'name' => $data['name']
             ]);
     }
-    public function changeDescription(ChangeDescriptionRequest $request){
+
+    public function changeDescription(ChangeDescriptionRequest $request)
+    {
         $data = $request->validated();
         DB::table('products')
             ->where('id', '=', $data['product_id'])
@@ -112,7 +118,9 @@ class ProductController extends Controller
                 'description' => $data['description']
             ]);
     }
-    public function changePrice (ChangePriceRequest $request){
+
+    public function changePrice(ChangePriceRequest $request)
+    {
         $data = $request->validated();
         DB::table('products')
             ->where('id', '=', $data['product_id'])
@@ -120,7 +128,9 @@ class ProductController extends Controller
                 'description' => $data['description']
             ]);
     }
-    public function deleteProduct (DeleteProductRequest $request) {
+
+    public function deleteProduct(DeleteProductRequest $request)
+    {
         $data = $request->validated();
         DB::table('products')
             ->where('id', '=', $data['product_id'])

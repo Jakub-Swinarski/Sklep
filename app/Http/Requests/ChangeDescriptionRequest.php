@@ -23,7 +23,7 @@ class ChangeDescriptionRequest extends FormRequest
     {
         return [
             'product_id' => ['required', 'integer', 'exists:products'],
-            'description' => ['required','string','min:3','max:65535']
+            'description' => ['required', 'string', 'min:3', 'max:65535']
         ];
     }
 }

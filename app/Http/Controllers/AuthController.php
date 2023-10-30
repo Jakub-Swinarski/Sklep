@@ -32,7 +32,7 @@ class AuthController extends Controller
 
     public function acceptEmail(string $uuid)
     {
-        DB::transaction(function() use ($uuid) {
+        DB::transaction(function () use ($uuid) {
             $user = $this->emailVerificationService->checkAttempt($uuid);
 
             if ($user === false) {
@@ -86,7 +86,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        DB::transaction(function ()use ($request){
+        DB::transaction(function () use ($request) {
             $data = $request->validated();
             $user = new User();
             $user->username = $data['username'];

@@ -22,7 +22,7 @@ class OrderController extends Controller
                 'pay_online' => $data['pay'],
                 'invoice_id' => $data['invoice_id']
             ]);
-        foreach ($data['products'] as $product){
+        foreach ($data['products'] as $product) {
             DB::table('orders_products')
                 ->insert([
                     'order_id' => $order_id,

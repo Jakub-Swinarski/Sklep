@@ -39,7 +39,7 @@ Route::prefix('user')->group(function () {
         Route::put('/password', [\App\Http\Controllers\UserController::class, 'changePassword']);
         Route::put('/email', [\App\Http\Controllers\UserController::class, 'changeEmail']);
         Route::put('/username', [\App\Http\Controllers\UserController::class, 'changeUsername']);
-        Route::get('/all',[\App\Http\Controllers\UserController::class,'getAllUsers']);
+        Route::get('/all', [\App\Http\Controllers\UserController::class, 'getAllUsers']);
     });
 });
 Route::middleware('auth')->group(function () {
@@ -68,16 +68,16 @@ Route::middleware('auth')->group(function () {
     Route::prefix('rating')->group(function () {
         Route::post('/', [\App\Http\Controllers\RatingsController::class, 'newRating']);
         Route::put('/', [\App\Http\Controllers\RatingsController::class, 'editRating']);
-        Route::get('/all',[\App\Http\Controllers\RatingsController::class, 'getRating']);
-        Route::get('/product',[\App\Http\Controllers\RatingsController::class, 'getProductRatings']);
-        Route::get('/user',[\App\Http\Controllers\RatingsController::class, 'getUserRatings']);
-        Route::delete('/',[\App\Http\Controllers\RatingsController::class, 'deleteRating']);
+        Route::get('/all', [\App\Http\Controllers\RatingsController::class, 'getRating']);
+        Route::get('/product', [\App\Http\Controllers\RatingsController::class, 'getProductRatings']);
+        Route::get('/user', [\App\Http\Controllers\RatingsController::class, 'getUserRatings']);
+        Route::delete('/', [\App\Http\Controllers\RatingsController::class, 'deleteRating']);
     });
-    Route::prefix('order')->group(function (){
-        Route::post('/',[\App\Http\Controllers\OrderController::class, 'newOrder']);
-        Route::get('/all',[\App\Http\Controllers\OrderController::class,'getOrder']);
-        Route::get('/user',[\App\Http\Controllers\OrderController::class,'getUserOrders']);
-        Route::put('/',[\App\Http\Controllers\OrderController::class,'editOrder']);
-        Route::delete('',[\App\Http\Controllers\OrderController::class,'deleteOrder']);
+    Route::prefix('order')->group(function () {
+        Route::post('/', [\App\Http\Controllers\OrderController::class, 'newOrder']);
+        Route::get('/all', [\App\Http\Controllers\OrderController::class, 'getOrder']);
+        Route::get('/user', [\App\Http\Controllers\OrderController::class, 'getUserOrders']);
+        Route::put('/', [\App\Http\Controllers\OrderController::class, 'editOrder']);
+        Route::delete('', [\App\Http\Controllers\OrderController::class, 'deleteOrder']);
     });
 });

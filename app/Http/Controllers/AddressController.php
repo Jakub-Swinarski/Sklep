@@ -14,13 +14,14 @@ use Illuminate\Validation\ValidationException;
 
 class AddressController extends Controller
 {
-    public function addAddress(NewAddressRequest $request){
+    public function addAddress(NewAddressRequest $request)
+    {
         $data = $request->validated();
         DB::beginTransaction();
         try {
             $address_id = DB::table('address')
                 ->insertGetId([
-                    'name'=> $data['name'],
+                    'name' => $data['name'],
                     'surname' => $data['surname'],
                     'address' => $data['address'],
                     'city' => $data['city'],
@@ -33,62 +34,66 @@ class AddressController extends Controller
                     'address_id' => $address_id
                 ]);
             DB::commit();
-        }catch (Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             ValidationException::withMessages(['data' => $e]);
         }
 
     }
-    public function editAddress(EditAddressRequest $request){
+
+    public function editAddress(EditAddressRequest $request)
+    {
         $data = $request->validated();
         try {
-            if(isset($data['name'])){
+            if (isset($data['name'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['name']
                     ]);
             }
-            if(isset($data['surname'])){
+            if (isset($data['surname'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['surname']
                     ]);
             }
-            if(isset($data['address'])){
+            if (isset($data['address'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['address']
                     ]);
             }
-            if(isset($data['city'])){
+            if (isset($data['city'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['city']
                     ]);
             }
-            if(isset($data['zipcode'])){
+            if (isset($data['zipcode'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['zipcode']
                     ]);
             }
-            if(isset($data['number'])){
+            if (isset($data['number'])) {
                 DB::table('address')
                     ->where('id', '=', $data['address_id'])
                     ->update([
                         'name' => $data['number']
                     ]);
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             ValidationException::withMessages(['data' => 'nie udało się']);
         }
     }
-    public function deleteAddress(DeleteAddressRequest $request){
+
+    public function deleteAddress(DeleteAddressRequest $request)
+    {
         $data = $request->validated();
         DB::table('address')
             ->where('id', '=', $data['address_id'])
@@ -96,11 +101,13 @@ class AddressController extends Controller
                 'is_deleted' => true
             ]);
     }
-    public function getUserAddress(GetUserAddressRequest $request){
+
+    public function getUserAddress(GetUserAddressRequest $request)
+    {
         $data = $request->validated();
         return DB::table('address_user', 'au')
             ->where('user_id', '=', $data['user_id'])
-            ->leftJoin('address','au.address_id','=', 'address.id')
+            ->leftJoin('address', 'au.address_id', '=', 'address.id')
             ->get();
     }
 }

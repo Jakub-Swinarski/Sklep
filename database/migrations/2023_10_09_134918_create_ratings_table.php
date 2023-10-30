@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->integer('rating');
             $table->string('heading')->nullable();
             $table->text('description')->nullable();
-            $table->date('when')->default(now())->useCurrent();
             $table->boolean('is_edited')->default(false);
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

@@ -22,13 +22,13 @@ class NewAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','min:3','max:255'],
-            'surname' =>['required','string','min:3','max:255'],
-            'address'=>['required','string','min:3','max:255'],
-            'city'=>['required','string','min:3','max:255'],
-            'zipcode'=>['required','integer','min:5','max:5'],
-            'number'=>['required','integer','min:9','max:9'],
-            'user_id'=>['required','integer','exists:users.id']
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'surname' => ['required', 'string', 'min:3', 'max:255'],
+            'address' => ['required', 'string', 'min:3', 'max:255'],
+            'city' => ['required', 'string', 'min:3', 'max:255'],
+            'zipcode' => ['required', 'integer', 'min:5', 'max:5'],
+            'number' => ['required', 'integer', 'min:9', 'max:9'],
+            'user_id' => ['required', 'integer', 'exists:users.id']
         ];
     }
 }

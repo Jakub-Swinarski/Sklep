@@ -22,7 +22,10 @@ class NewRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => ['required', 'integer', 'exists:products.id'],
+            'rating' => ['required', 'integer', 'min:0', 'max:10'],
+            'heading' => ['string', 'max:255'],
+            'description' => ['string', 'min:1', 'max:3000']
         ];
     }
 }

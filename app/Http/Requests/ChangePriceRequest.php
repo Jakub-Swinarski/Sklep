@@ -23,7 +23,7 @@ class ChangePriceRequest extends FormRequest
     {
         return [
             'product_id' => ['required', 'integer', 'exists:products'],
-            'price' => ['required','integer']
+            'price' => ['required', 'integer']
         ];
     }
 }

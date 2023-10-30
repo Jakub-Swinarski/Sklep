@@ -21,7 +21,7 @@ class RatingFactory extends Factory
         return [
             'product_id' => Product::factory()->create(),
             'user_id' => User::factory()->create(),
-            'rating' => fake()->numberBetween(1,5),
+            'rating' => fake()->numberBetween(1, 5),
             'heading' => fake()->text,
             'description' => fake()->text,
         ];

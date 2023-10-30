@@ -23,7 +23,7 @@ class ChangeNameRequest extends FormRequest
     {
         return [
             'product_id' => ['required', 'integer', 'exists:products'],
-            'name' => ['required','string','min:3','max:255']
+            'name' => ['required', 'string', 'min:3', 'max:255']
         ];
     }
 }

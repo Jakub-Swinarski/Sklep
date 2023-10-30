@@ -22,7 +22,7 @@ class DeleteRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'rating_id' => ['required', 'integer', 'exists:ratings.id']
         ];
     }
 }

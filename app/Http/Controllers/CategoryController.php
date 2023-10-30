@@ -50,13 +50,15 @@ class CategoryController extends Controller
         return DB::table('products_categories')
             ->get();
     }
-    public function getProductCategory(GetProductCategoryRequest $request){
+
+    public function getProductCategory(GetProductCategoryRequest $request)
+    {
         $data = $request->validated();
         return DB::table('products')
-            ->where('id','=',$data['product_id'])
-            ->leftJoin('products_products_categories',function (JoinClause $join){
-                $join->on('id' , '=', 'product_id');
-                $join->leftJoin('products_categories', 'category_id', '=','id');
+            ->where('id', '=', $data['product_id'])
+            ->leftJoin('products_products_categories', function (JoinClause $join) {
+                $join->on('id', '=', 'product_id');
+                $join->leftJoin('products_categories', 'category_id', '=', 'id');
             })->get();
     }
 }

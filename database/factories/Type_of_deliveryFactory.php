@@ -18,7 +18,7 @@ class Type_of_deliveryFactory extends Factory
     {
         return [
             'name' => fake()->streetSuffix,
-            'price' => fake()->randomFloat(2,1,100)
+            'price' => fake()->randomFloat(2, 1, 100)
         ];
     }
 }
