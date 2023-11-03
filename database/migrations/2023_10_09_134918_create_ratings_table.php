@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->string('heading')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_edited')->default(false);
-            $table->boolean('is_deleted')->default(false);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

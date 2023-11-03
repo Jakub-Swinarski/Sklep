@@ -21,7 +21,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'type_of_delivery' => Type_of_delivery::factory()->create(),
+            'type_of_delivery_id' => Type_of_delivery::factory()->create(),
             'address' => Address::factory()->create(),
             'pay_online' => fake()->boolean,
             'invoice_id' => Invoice::factory()->create()

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ChangeUsernameRequest;
+use App\Http\Requests\DeleteUserNoPasswordRequest;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\NewEmailRequest;
 use App\Http\Requests\ResetPasswordRequest;
@@ -70,11 +71,13 @@ class UserController extends Controller
         $data = $request->validated();
         if (Hash::check($data['password'], auth()->user()->getAuthPassword())) {
             DB::table('users')
-                ->where('id', '=', auth()->id())
+                ->where('id', '=', $data['user_id'])
                 ->update([
                     'email' => $data['email']
                 ]);
+            return $data;
         }
+        abort(422, 'Hasło niepoprawne');
     }
 
     public function changeUsername(ChangeUsernameRequest $request)
@@ -85,11 +88,17 @@ class UserController extends Controller
             ->update([
                 'username' => $data['username']
             ]);
+        return $data;
     }
 
     public function getAllUsers()
     {
         return DB::table('users')->get();
     }
-
+    public function deleteUser(DeleteUserNoPasswordRequest $request){
+        $data = $request->validated();
+        DB::table('users')
+            ->where('id','=',$data['user_id'])
+            ->delete();
+    }
 }

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->double('price');
             $table->integer('supply');
             $table->text('description');
-            $table->boolean('is_deleted')->default(false);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

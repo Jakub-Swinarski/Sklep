@@ -20,10 +20,11 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::post("/logout", [\App\Http\Controllers\AuthController::class, 'logout']);
-        Route::get('/user', [\App\Http\Controllers\AuthController::class, 'getUser']);
-        Route::delete('/user', [\App\Http\Controllers\AuthController::class, 'delete']);
+        Route::get('/', [\App\Http\Controllers\AuthController::class, 'getUser']);
+        Route::delete('/', [\App\Http\Controllers\AuthController::class, 'delete']);
     });
 });
+
 Route::prefix('user')->group(function () {
     Route::post('/forgotPassword', [\App\Http\Controllers\UserController::class, 'emailPasswordReset'])
         ->name('password.email');
@@ -35,13 +36,18 @@ Route::prefix('user')->group(function () {
     })->middleware('guest')->name('password.reset');
     Route::get('email/{uuid}', [\App\Http\Controllers\AuthController::class, 'acceptEmail'])->name('verification.verify');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/password', [\App\Http\Controllers\UserController::class, 'changePassword']);
         Route::put('/email', [\App\Http\Controllers\UserController::class, 'changeEmail']);
         Route::put('/username', [\App\Http\Controllers\UserController::class, 'changeUsername']);
-        Route::get('/all', [\App\Http\Controllers\UserController::class, 'getAllUsers']);
+        Route::get('/all', [\App\Http\Controllers\UserController::class, 'getAllUsers'])
+            ->middleware('isAdmin');
+        Route::delete('/',[\App\Http\Controllers\UserController::class, 'deleteUser']);
     });
+
+
 });
+
 Route::middleware('auth')->group(function () {
     Route::prefix('address')->group(function () {
         Route::post('/', [\App\Http\Controllers\AddressController::class, 'addAddress']);

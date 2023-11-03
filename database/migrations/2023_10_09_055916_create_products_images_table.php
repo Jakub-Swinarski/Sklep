@@ -17,6 +17,7 @@ return new class extends Migration {
                 ->on('products')
                 ->onDelete('cascade');
             $table->binary('image');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

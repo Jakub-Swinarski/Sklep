@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('password', 72);
             $table->boolean('is_admin')->default(false);
             $table->string('token')->default(Str::random(10));
-            $table->boolean('is_deleted')->default(false);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
