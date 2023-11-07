@@ -15,7 +15,7 @@ class ChangeDescriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => ['required', 'integer', 'exists:products'],
+            'product_id' => ['required', 'integer', 'exists:products,id'],
             'description' => ['required', 'string', 'min:3', 'max:65535']
         ];
     }
