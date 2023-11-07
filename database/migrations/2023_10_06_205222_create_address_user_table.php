@@ -20,7 +20,7 @@ return new class extends Migration {
                 ->references('id')
                 ->on('address')
                 ->onDelete('CASCADE');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

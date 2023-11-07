@@ -30,13 +30,21 @@ class DatabaseSeeder extends Seeder
             'username' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        Products_category::factory(10);
         Address::factory(10)->create();
         Product::factory(10)->create();
         Products_category::factory(10)->create();
         AddressUser::factory(10)->create();
         Product_image::factory(10)->create();
-        Products_products_category::factory(10)->create();
-        Rating::factory(10)->create();
+        Product_image::factory(5)->create([
+            'product_id' => 1
+        ]);
+        Products_products_category::factory(10)->create([
+            'product_id'=> 1
+        ]);
+        Rating::factory(10)->create([
+            'product_id' => 1
+        ]);
         Invoice::factory(10)->create();
         Type_of_delivery::factory(10)->create();
         Order::factory(10)->create();

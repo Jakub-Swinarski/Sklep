@@ -25,7 +25,7 @@ return new class extends Migration {
                 ->references('id')
                 ->on('invoices')
                 ->onDelete('cascade');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

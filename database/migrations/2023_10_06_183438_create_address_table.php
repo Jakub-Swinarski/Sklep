@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('city');
             $table->integer('zipcode');
             $table->integer('number');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

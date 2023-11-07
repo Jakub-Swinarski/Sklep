@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangePasswordRequest extends FormRequest
+class DeleteImageRequest extends FormRequest
 {
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,9 +15,7 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'old_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'min:8', 'max:64']
+            'product_id' => ['required', 'integer', 'exists:products,id']
         ];
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->double('price');
             $table->integer('supply');
             $table->text('description');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

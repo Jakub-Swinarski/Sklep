@@ -20,7 +20,7 @@ return new class extends Migration {
                 ->references('id')
                 ->on('products_categories')
                 ->onDelete('cascade');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

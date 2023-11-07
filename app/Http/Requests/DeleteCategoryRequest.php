@@ -6,13 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteCategoryRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +16,8 @@ class DeleteCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required', 'integer', 'exists:category.id']
+            'category_id' => ['required', 'integer', 'exists:products_products_categories,category_id'],
+            'product_id' => ['required', 'integer', 'exists:products_products_categories,product_id']
         ];
     }
 }

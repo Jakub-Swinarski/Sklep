@@ -61,10 +61,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/', [\App\Http\Controllers\CategoryController::class, 'deleteCategory']);
         Route::get('/all', [\App\Http\Controllers\CategoryController::class, 'getAllCategories']);
         Route::get('/product', [\App\Http\Controllers\CategoryController::class, 'getProductCategory']);
+        Route::put('/product',[\App\Http\Controllers\CategoryController::class, 'addCategoryToProduct']);
     });
     Route::prefix('product')->group(function () {
         Route::get('/', [\App\Http\Controllers\ProductController::class, 'getProduct']);
+        Route::get('/all',[\App\Http\Controllers\ProductController::class, 'getAllProducts']);
         Route::post('/', [\App\Http\Controllers\ProductController::class, 'newProduct']);
+        Route::put('/image',[\App\Http\Controllers\ProductController::class,'newImage']);
+        Route::delete('/image/delete',[\App\Http\Controllers\ProductController::class, 'deleteImage']);
         Route::put('/supply', [\App\Http\Controllers\ProductController::class, 'changeSupply']);
         Route::put('/name', [\App\Http\Controllers\ProductController::class, 'changeName']);
         Route::put('/description', [\App\Http\Controllers\ProductController::class, 'changeDescription']);

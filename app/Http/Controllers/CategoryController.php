@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCategoryToProductRequest;
 use App\Http\Requests\DeleteCategoryRequest;
 use App\Http\Requests\EditCategoryRequest;
 use App\Http\Requests\GetProductCategoryRequest;
 use App\Http\Requests\NewCategoryRequest;
 use App\Models\Products_category;
+use App\Models\Products_products_category;
 use App\Models\User;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -37,11 +39,9 @@ class CategoryController extends Controller
     public function deleteCategory(DeleteCategoryRequest $request)
     {
         $data = $request->validated();
-        DB::table('products_categories')
-            ->where('id', '=', $data['category_id'])
-            ->update([
-                'is_deleted' => true
-            ]);
+        return Products_products_category::where('product_id',$data['product_id'])
+            ->where('category_id',$data['category_id'])
+            ->delete();
     }
 
     public function getAllCategories()
@@ -60,5 +60,21 @@ class CategoryController extends Controller
                 $join->on('id', '=', 'product_id');
                 $join->leftJoin('products_categories', 'category_id', '=', 'id');
             })->get();
+    }
+    public function addCategoryToProduct(AddCategoryToProductRequest $request){
+        $data = $request->validated();
+        $category = Products_category::firstWhere('name',$data['name']);
+        if (isset($category)){
+            $category_product = new Products_products_category();
+            $category_product->category_id = $category->id;
+            $category_product->product_id = $data['product_id'];
+            $category_product->save();
+        }else{
+            $category_id = Products_category::insertGetId(['name' => $data['name']]);
+            Products_products_category::insert([
+                'category_id' => $category_id,
+                'product_id' => $data['product_id']
+            ]);
+        }
     }
 }
