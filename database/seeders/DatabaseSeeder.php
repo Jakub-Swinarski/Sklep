@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Address;
-use App\Models\AddressUser;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Orders_product;
@@ -14,7 +13,6 @@ use App\Models\Products_category;
 use App\Models\Products_products_category;
 use App\Models\Rating;
 use App\Models\Type_of_delivery;
-use Database\Factories\AddressUserFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,7 +32,6 @@ class DatabaseSeeder extends Seeder
         Address::factory(10)->create();
         Product::factory(10)->create();
         Products_category::factory(10)->create();
-        AddressUser::factory(10)->create();
         Product_image::factory(10)->create();
         Product_image::factory(5)->create([
             'product_id' => 1

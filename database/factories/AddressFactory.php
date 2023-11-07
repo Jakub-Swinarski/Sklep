@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,8 @@ class AddressFactory extends Factory
             'address' => fake()->streetAddress(),
             'city' => fake()->city(),
             'zipcode' => fake()->randomNumber(5),
-            'number' => fake()->randomNumber(9)
+            'number' => fake()->randomNumber(9),
+            'user_id' => User::factory()->create()
         ];
     }
 }

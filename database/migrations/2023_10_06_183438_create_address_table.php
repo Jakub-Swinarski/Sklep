@@ -18,6 +18,10 @@ return new class extends Migration {
             $table->string('city');
             $table->integer('zipcode');
             $table->integer('number');
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
