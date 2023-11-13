@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    protected $appends = ['avgRating','countRatings'];
+    protected $appends = ['avgRating','countRatings','image'];
 
     public function first_image(): HasOne{
-        return $this->hasOne(Product_image::class);
+        return $this->hasOne(Product_image::class)->oldestOfMany();
     }
     public function images(): HasMany{
         return $this->hasMany(Product_image::class);
@@ -28,6 +28,7 @@ class Product extends Model
             ->whereNull('products_products_categories.deleted_at');
     }
 
+
     protected function getAvgRatingAttribute()
     {
         return $this->ratings()->avg('rating');
@@ -35,6 +36,10 @@ class Product extends Model
     protected function getCountRatingsAttribute()
     {
         return $this->ratings()->count();
+    }
+
+    protected function getimageAttribute(){
+        return $this->first_image()->get();
     }
 
     use HasFactory;

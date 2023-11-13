@@ -33,6 +33,10 @@ class DatabaseSeeder extends Seeder
         Product::factory(10)->create();
         Products_category::factory(10)->create();
         Product_image::factory(10)->create();
+
+        Type_of_delivery::factory(10)->create();
+        Order::factory(10)->create();
+        Orders_product::factory(10)->create();
         Product_image::factory(5)->create([
             'product_id' => 1
         ]);
@@ -42,9 +46,12 @@ class DatabaseSeeder extends Seeder
         Rating::factory(10)->create([
             'product_id' => 1
         ]);
-        Invoice::factory(10)->create();
-        Type_of_delivery::factory(10)->create();
-        Order::factory(10)->create();
-        Orders_product::factory(10)->create();
+        Orders_product::factory(1)->create([
+            'product_id' => 1,
+            'order_id' => 1
+        ]);
+        Orders_product::factory(1)->create([
+            'order_id' => 1
+        ]);
     }
 }

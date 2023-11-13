@@ -20,7 +20,7 @@ class Orders_productFactory extends Factory
     {
         return [
             'order_id' => Order::factory()->create(),
-            'products_id' => Product::factory()->create()
+            'product_id' => Product::factory()->create()
         ];
     }
 }

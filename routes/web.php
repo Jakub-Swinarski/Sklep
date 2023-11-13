@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('order')->group(function () {
         Route::post('/', [\App\Http\Controllers\OrderController::class, 'newOrder']);
-        Route::get('/all', [\App\Http\Controllers\OrderController::class, 'getOrder']);
+        Route::get('/all', [\App\Http\Controllers\OrderController::class, 'getAllOrders']);
         Route::get('/user', [\App\Http\Controllers\OrderController::class, 'getUserOrders']);
         Route::put('/', [\App\Http\Controllers\OrderController::class, 'editOrder']);
         Route::delete('', [\App\Http\Controllers\OrderController::class, 'deleteOrder']);

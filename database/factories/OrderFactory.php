@@ -3,9 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Address;
-use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Type_of_delivery;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,9 +22,10 @@ class OrderFactory extends Factory
     {
         return [
             'type_of_delivery_id' => Type_of_delivery::factory()->create(),
-            'address' => Address::factory()->create(),
-            'pay_online' => fake()->boolean,
-            'invoice_id' => Invoice::factory()->create()
+            'address_id' => Address::factory()->create(),
+            'pay_type' => fake()->randomElement(['online','cash_on_delivery','in_shop']),
+            'invoice_number' => fake()->randomNumber(5),
+            'user_id' => User::factory()->create()
         ];
     }
 }

@@ -16,14 +16,15 @@ return new class extends Migration {
                 ->references('id')
                 ->on('type_of_delivery')
                 ->onDelete('cascade');
-            $table->foreignId('address')
+            $table->foreignId('address_id')
                 ->references('id')
                 ->on('address')
                 ->onDelete('cascade');
-            $table->boolean('pay_online');
-            $table->foreignId('invoice_id')
+            $table->enum('pay_type',['online','cash_on_delivery','in_shop'])->default('in_shop');
+            $table->integer('invoice_number');
+            $table->foreignId('user_id')
                 ->references('id')
-                ->on('invoices')
+                ->on('users')
                 ->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

@@ -16,10 +16,11 @@ return new class extends Migration {
                 ->references('id')
                 ->on('orders')
                 ->onDelete('cascade');
-            $table->foreignId('products_id')
+            $table->foreignId('product_id')
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
+            $table->integer('how_many')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
