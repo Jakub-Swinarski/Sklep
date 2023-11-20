@@ -6,13 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class GetOrderRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +15,7 @@ class GetOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'order_id' => ['required','exists:orders,id']
         ];
     }
 }

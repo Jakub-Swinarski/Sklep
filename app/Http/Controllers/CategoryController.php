@@ -29,18 +29,29 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        DB::table('products_categories')
-            ->where('id', '=', $data['category_id'])
-            ->update([
+        $category = Products_category::where('name', $data['name'])->first();
+        if (isset($category)) {
+            return Products_products_category::insert([
+                'category_id' => $category['id'],
+                'product_id' => $data['product_id']
+            ]);
+        } else {
+            $categoryId = Products_category::insertGetId([
                 'name' => $data['name']
             ]);
+            return Products_products_category::insert([
+                'category_id' => $categoryId,
+                'product_id' => $data['product_id']
+            ]);
+        }
+
     }
 
     public function deleteCategory(DeleteCategoryRequest $request)
     {
         $data = $request->validated();
-        return Products_products_category::where('product_id',$data['product_id'])
-            ->where('category_id',$data['category_id'])
+        return Products_products_category::where('product_id', $data['product_id'])
+            ->where('category_id', $data['category_id'])
             ->delete();
     }
 
@@ -61,15 +72,17 @@ class CategoryController extends Controller
                 $join->leftJoin('products_categories', 'category_id', '=', 'id');
             })->get();
     }
-    public function addCategoryToProduct(AddCategoryToProductRequest $request){
+
+    public function addCategoryToProduct(AddCategoryToProductRequest $request)
+    {
         $data = $request->validated();
-        $category = Products_category::firstWhere('name',$data['name']);
-        if (isset($category)){
+        $category = Products_category::firstWhere('name', $data['name']);
+        if (isset($category)) {
             $category_product = new Products_products_category();
             $category_product->category_id = $category->id;
             $category_product->product_id = $data['product_id'];
             $category_product->save();
-        }else{
+        } else {
             $category_id = Products_category::insertGetId(['name' => $data['name']]);
             Products_products_category::insert([
                 'category_id' => $category_id,

@@ -25,7 +25,8 @@ class OrderController extends Controller
 
     public function getOrder(GetOrderRequest $request)
     {
-
+        $data = $request->validated();
+        return Order::with(['products','typeOfDelivery', 'user', 'address'])->find($data['order_id']);
     }
     public function getAllOrders(){
         return Order::with(['products','typeOfDelivery', 'user', 'address'])->get();

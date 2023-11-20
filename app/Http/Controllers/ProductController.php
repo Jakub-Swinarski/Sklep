@@ -38,66 +38,26 @@ class ProductController extends Controller
     public function newProduct(NewProductRequest $request)
     {
         $data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $product_id = DB::table('products')
-                ->insertGetId([
-                    'name' => $data['name'],
-                    'price' => $data['price'],
-                    'supply' => $data['supply'],
-                    'description' => $data['description']
-                ]);
-            if (isset($data['images'])) {
-                foreach ($data['images'] as $image) {
-                    DB::table('products_images')
-                        ->insert([
-                            'product_id' => $product_id,
-                            'image' => $image
-                        ]);
-                }
-            }
-            if (isset($data['categories'])) {
-                foreach ($data['categories'] as $category) {
-                    $category_id = DB::table('products_categories')
-                        ->where('name', '=', $category)
-                        ->first();
-                    DB::table('products_products_categories')
-                        ->insert([
-                            'product_id' => $product_id,
-                            'category_id' => $category_id
-                        ]);
-                }
-            }
-            if (isset($data['newCategories'])) {
-                foreach ($data['newCategories'] as $category) {
-                    $category_id = DB::table('products_categories')
-                        ->insertGetId([
-                            'name' => $category
-                        ]);
-                    DB::table('products_products_categories')
-                        ->insert([
-                            'product_id' => $product_id,
-                            'category_id' => $category_id
-                        ]);
-                }
-            }
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $exception;
-        }
-        return true;
+        $productId = Product::insertGetId([
+            'name' => $data['name'],
+            'price' => $data['price'],
+            'supply' => $data['supply'],
+            'description' => $data['description']
+        ]);
+        return ['id' => $productId];
     }
 
-    public function deleteImage(DeleteImageRequest $request){
+    public function deleteImage(DeleteImageRequest $request)
+    {
         $data = $request->validated();
         Product_image::find($data['product_id'])
             ->delete();
     }
+
     public function newImage(NewImageRequest $request)
     {
         $file = request()->file('image');
-        $filename = uniqid("product_image_") . "." .  $file->extension();
+        $filename = uniqid("product_image_") . "." . $file->extension();
         $file->storeAs('public', $filename);
 
         $product_image = new Product_image;

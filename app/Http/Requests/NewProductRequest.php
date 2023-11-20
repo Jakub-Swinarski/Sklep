@@ -10,17 +10,10 @@ class NewProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:255'],
-            'price' => ['required', 'double'],
+            'price' => ['required', 'decimal:0,2'],
             'supply' => ['required', 'integer'],
             'description' => ['required', 'string'],
 
-            'images' => ['array'],
-            'images.*.image' => ['request'],
-
-            'categories' => ['array'],
-            'categories.*.name' => ['string', 'max:255'],
-            'newCategories' => ['array'],
-            'newCategories.*.name' => ['string', 'max:255']
         ];
     }
 }
