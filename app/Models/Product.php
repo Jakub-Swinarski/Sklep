@@ -39,7 +39,7 @@ class Product extends Model
     }
 
     protected function getimageAttribute(){
-        return $this->first_image()->get();
+        return $this->first_image()->first();
     }
 
     use HasFactory;

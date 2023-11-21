@@ -20,16 +20,19 @@ class OrderController extends Controller
 
     public function getUserOrders(GetUserOrdersRequest $request)
     {
-
+        $data = $request->validated();
+        return Order::with(['products', 'typeOfDelivery', 'user', 'address'])->where('user_id','=', $data['user_id'])->get();
     }
 
     public function getOrder(GetOrderRequest $request)
     {
         $data = $request->validated();
-        return Order::with(['products','typeOfDelivery', 'user', 'address'])->find($data['order_id']);
+        return Order::with(['products', 'typeOfDelivery', 'user', 'address'])->find($data['order_id']);
     }
-    public function getAllOrders(){
-        return Order::with(['products','typeOfDelivery', 'user', 'address'])->get();
+
+    public function getAllOrders()
+    {
+        return Order::with(['products', 'typeOfDelivery', 'user', 'address'])->get();
     }
 
     public function editOrder(EditOrderRequest $request)
