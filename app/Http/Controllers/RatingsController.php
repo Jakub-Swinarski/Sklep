@@ -8,6 +8,7 @@ use App\Http\Requests\GetProductRatingsRequest;
 use App\Http\Requests\GetRatingRequest;
 use App\Http\Requests\GetUserRatingsRequest;
 use App\Http\Requests\NewRatingRequest;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,29 +42,24 @@ class RatingsController extends Controller
     {
         $data = $request->validated();
         if (isset($data['rating'])) {
-            DB::table('ratings')
-                ->where('id', '=', $data['rating_id'])
+            Rating::where('id', '=', $data['rating_id'])
                 ->update([
                     'rating' => $data['rating'],
-                    'is_edited' => true
                 ]);
         }
         if (isset($data['heading'])) {
-            DB::table('ratings')
-                ->where('id', '=', $data['rating_id'])
+            Rating::where('id', '=', $data['rating_id'])
                 ->update([
                     'heading' => $data['heading'],
-                    'is_edited' => true
                 ]);
         }
         if (isset($data['description'])) {
-            DB::table('ratings')
-                ->where('id', '=', $data['rating_id'])
+            Rating::where('id', '=', $data['rating_id'])
                 ->update([
                     'description' => $data['description'],
-                    'is_edited' => true
                 ]);
         }
+        return true;
     }
 
     public function getRating(GetRatingRequest $request)
@@ -87,9 +83,7 @@ class RatingsController extends Controller
     public function getUserRatings(GetUserRatingsRequest $request)
     {
         $data = $request->validated();
-        return DB::table('ratings')
-            ->where('user_id', '=', $data['user_id'])
-            ->get();
+        return Rating::with('product')->where('user_id', $data['user_id'])->get();
     }
 
     public function deleteRating(DeleteRatingRequest $request)

@@ -6,13 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EditRatingRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,6 +15,7 @@ class EditRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'rating_id' => ['required', 'exists:ratings,id'],
             'rating' => ['integer', 'min:0', 'max:10'],
             'heading' => ['string', 'max:255'],
             'description' => ['string', 'min:1', 'max:3000']
