@@ -6,6 +6,7 @@ use App\Http\Requests\DeleteAddressRequest;
 use App\Http\Requests\EditAddressRequest;
 use App\Http\Requests\GetUserAddressRequest;
 use App\Http\Requests\NewAddressRequest;
+use App\Models\Address;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,20 +20,15 @@ class AddressController extends Controller
         $data = $request->validated();
         DB::beginTransaction();
         try {
-            $address_id = DB::table('address')
-                ->insertGetId([
-                    'name' => $data['name'],
-                    'surname' => $data['surname'],
-                    'address' => $data['address'],
-                    'city' => $data['city'],
-                    'zipcode' => $data['zipcode'],
-                    'number' => $data['number']
-                ]);
-            DB::table('address_user')
-                ->insert([
-                    'user_id' => $data['user_id'],
-                    'address_id' => $address_id
-                ]);
+            $address = new Address;
+            $address->name = $data['name'];
+            $address->surname = $data['surname'];
+            $address->address = $data['address'];
+            $address->city = $data['city'];
+            $address->zipcode = $data['zipcode'];
+            $address->number = $data['number'];
+            $address->user_id = $data['user_id'];
+            $address->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -44,70 +40,64 @@ class AddressController extends Controller
     public function editAddress(EditAddressRequest $request)
     {
         $data = $request->validated();
+        $address = Address::where('id', $data['address_id'])->first();
+        DB::beginTransaction();
         try {
-            if (isset($data['name'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['name']) and $address->name != $data['name']) {
+                Address::where('id', $data['address_id'])
                     ->update([
                         'name' => $data['name']
                     ]);
             }
-            if (isset($data['surname'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['surname']) and $address->surname != $data['surname']) {
+                Address::where('id', $data['address_id'])
                     ->update([
-                        'name' => $data['surname']
+                        'surname' => $data['surname']
                     ]);
             }
-            if (isset($data['address'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['address']) and $address->address != $data['address']) {
+                Address::where('id', $data['address_id'])
                     ->update([
-                        'name' => $data['address']
+                        'address' => $data['address']
                     ]);
             }
-            if (isset($data['city'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['city']) and $address->city != $data['city']) {
+                Address::where('id', $data['address_id'])
                     ->update([
-                        'name' => $data['city']
+                        'city' => $data['city']
                     ]);
             }
-            if (isset($data['zipcode'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['zipcode']) and $address->zipcode != $data['zipcode']) {
+                Address::where('id', $data['address_id'])
                     ->update([
-                        'name' => $data['zipcode']
+                        'zipcode' => $data['zipcode']
                     ]);
             }
-            if (isset($data['number'])) {
-                DB::table('address')
-                    ->where('id', '=', $data['address_id'])
+            if (isset($data['number']) and $address->number != $data['number']) {
+                Address::where('id', $data['address_id'])
                     ->update([
-                        'name' => $data['number']
+                        'number' => $data['number']
                     ]);
             }
-        } catch (Exception $e) {
-            ValidationException::withMessages(['data' => 'nie udało się']);
+            DB::commit();
+        } catch (Exception $e){
+            DB::rollBack();
+            ValidationException::withMessages(['data' => $e]);
         }
+
+        return true;
+
     }
 
     public function deleteAddress(DeleteAddressRequest $request)
     {
         $data = $request->validated();
-        DB::table('address')
-            ->where('id', '=', $data['address_id'])
-            ->update([
-                'is_deleted' => true
-            ]);
+        Address::where('id', $data['delivery_id'])->delete();
     }
 
     public function getUserAddress(GetUserAddressRequest $request)
     {
         $data = $request->validated();
-        return DB::table('address_user', 'au')
-            ->where('user_id', '=', $data['user_id'])
-            ->leftJoin('address', 'au.address_id', '=', 'address.id')
-            ->get();
+        return Address::where('user_id', $data['user_id'])->get();
     }
 }

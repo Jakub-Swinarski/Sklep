@@ -51,7 +51,7 @@ Route::prefix('user')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::prefix('address')->group(function () {
         Route::post('/', [\App\Http\Controllers\AddressController::class, 'addAddress']);
-        Route::post('/', [\App\Http\Controllers\AddressController::class, 'editAddress']);
+        Route::put('/', [\App\Http\Controllers\AddressController::class, 'editAddress']);
         Route::delete('/', [\App\Http\Controllers\AddressController::class, 'deleteAddress']);
         Route::get('/', [\App\Http\Controllers\AddressController::class, 'getUserAddress']);
     });
