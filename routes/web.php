@@ -48,7 +48,7 @@ Route::prefix('user')->group(function () {
 
 });
 
-//Route::middleware('auth')->group(function () {
+
 Route::prefix('address')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::post('/', [\App\Http\Controllers\AddressController::class, 'addAddress']);
@@ -60,25 +60,30 @@ Route::prefix('address')->group(function () {
 });
 Route::prefix('category')->group(function () {
     Route::middleware('auth')->group(function () {
-        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'newCategory']);
-        Route::put('/', [\App\Http\Controllers\CategoryController::class, 'editCategory']);
-        Route::delete('/', [\App\Http\Controllers\CategoryController::class, 'deleteCategory']);
         Route::get('/all', [\App\Http\Controllers\CategoryController::class, 'getAllCategories']);
         Route::get('/product', [\App\Http\Controllers\CategoryController::class, 'getProductCategory']);
-        Route::put('/product', [\App\Http\Controllers\CategoryController::class, 'addCategoryToProduct']);
+        Route::middleware('admin')->group(function (){
+            Route::put('/', [\App\Http\Controllers\CategoryController::class, 'editCategory']);
+            Route::delete('/', [\App\Http\Controllers\CategoryController::class, 'deleteCategory']);
+            Route::put('/product', [\App\Http\Controllers\CategoryController::class, 'addCategoryToProduct']);
+            Route::post('/', [\App\Http\Controllers\CategoryController::class, 'newCategory']);
+        });
+
     });
 });
 Route::prefix('product')->group(function () {
     Route::get('/', [\App\Http\Controllers\ProductController::class, 'getProduct']);
     Route::get('/all', [\App\Http\Controllers\ProductController::class, 'getAllProducts']);
-    Route::post('/', [\App\Http\Controllers\ProductController::class, 'newProduct']);
-    Route::put('/image', [\App\Http\Controllers\ProductController::class, 'newImage']);
-    Route::delete('/image/delete', [\App\Http\Controllers\ProductController::class, 'deleteImage']);
-    Route::put('/supply', [\App\Http\Controllers\ProductController::class, 'changeSupply']);
-    Route::put('/name', [\App\Http\Controllers\ProductController::class, 'changeName']);
-    Route::put('/description', [\App\Http\Controllers\ProductController::class, 'changeDescription']);
-    Route::put('/price', [\App\Http\Controllers\ProductController::class, 'changePrice']);
-    Route::delete('/', [\App\Http\Controllers\ProductController::class, 'deleteProduct']);
+    Route::middleware(['admin','auth'])->group(function (){
+        Route::post('/', [\App\Http\Controllers\ProductController::class, 'newProduct']);
+        Route::put('/image', [\App\Http\Controllers\ProductController::class, 'newImage']);
+        Route::delete('/image/delete', [\App\Http\Controllers\ProductController::class, 'deleteImage']);
+        Route::put('/supply', [\App\Http\Controllers\ProductController::class, 'changeSupply']);
+        Route::put('/name', [\App\Http\Controllers\ProductController::class, 'changeName']);
+        Route::put('/description', [\App\Http\Controllers\ProductController::class, 'changeDescription']);
+        Route::put('/price', [\App\Http\Controllers\ProductController::class, 'changePrice']);
+        Route::delete('/', [\App\Http\Controllers\ProductController::class, 'deleteProduct']);
+    });
 });
 Route::prefix('rating')->group(function () {
     Route::post('/', [\App\Http\Controllers\RatingsController::class, 'newRating']);
@@ -89,12 +94,16 @@ Route::prefix('rating')->group(function () {
     Route::delete('/', [\App\Http\Controllers\RatingsController::class, 'deleteRating']);
 });
 Route::prefix('order')->group(function () {
-    Route::post('/', [\App\Http\Controllers\OrderController::class, 'newOrder']);
-    Route::post('/notLogged',[\App\Http\Controllers\OrderController::class, 'newOrderNotLogged']);
-    Route::get('/all', [\App\Http\Controllers\OrderController::class, 'getAllOrders']);
-    Route::get('/', [\App\Http\Controllers\OrderController::class, 'getOrder']);
-    Route::get('/user', [\App\Http\Controllers\OrderController::class, 'getUserOrders']);
-    Route::put('/', [\App\Http\Controllers\OrderController::class, 'editOrder']);
-    Route::delete('', [\App\Http\Controllers\OrderController::class, 'deleteOrder']);
+    Route::middleware('auth')->group(function (){
+        Route::post('/', [\App\Http\Controllers\OrderController::class, 'newOrder']);
+        Route::post('/notLogged',[\App\Http\Controllers\OrderController::class, 'newOrderNotLogged']);
+        Route::get('/', [\App\Http\Controllers\OrderController::class, 'getOrder']);
+        Route::get('/user', [\App\Http\Controllers\OrderController::class, 'getUserOrders']);
+        Route::middleware('admin')->group(function (){
+            Route::put('/', [\App\Http\Controllers\OrderController::class, 'editOrder']);
+            Route::delete('', [\App\Http\Controllers\OrderController::class, 'deleteOrder']);
+            Route::get('/all', [\App\Http\Controllers\OrderController::class, 'getAllOrders']);
+        });
+    });
 });
-//});
+
