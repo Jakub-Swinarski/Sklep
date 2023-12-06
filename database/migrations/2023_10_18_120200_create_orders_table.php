@@ -20,12 +20,14 @@ return new class extends Migration {
                 ->references('id')
                 ->on('address')
                 ->onDelete('cascade');
-            $table->enum('pay_type',['online','cash_on_delivery','in_shop'])->default('in_shop');
+            $table->enum('pay_type',['online','przelew','odbiór','raty'])->default('in_shop');
             $table->integer('invoice_number');
             $table->foreignId('user_id')
+                ->nullable()
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
         });

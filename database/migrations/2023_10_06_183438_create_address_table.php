@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->integer('zipcode');
             $table->integer('number');
             $table->foreignId('user_id')
+                ->nullable()
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -21,8 +22,7 @@ class Order extends Model
         return $this->BelongsTo(Address::class);
     }
     public function products(): BelongsToMany{
-        return $this->belongsToMany(Product::class,'orders_products');
-
+        return $this->belongsToMany(Product::class,'orders_products')->withPivot('how_many');
     }
     public function typeOfDelivery(): BelongsTo{
         return $this->belongsTo(Type_of_delivery::class);
