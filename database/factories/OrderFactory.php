@@ -23,7 +23,7 @@ class OrderFactory extends Factory
         return [
             'type_of_delivery_id' => Type_of_delivery::factory()->create(),
             'address_id' => Address::factory()->create(),
-            'pay_type' => fake()->randomElement(['online','cash_on_delivery','in_shop']),
+            'pay_type' => fake()->randomElement(['online','przelew','odbiór','raty']),
             'invoice_number' => fake()->randomNumber(5),
             'user_id' => User::factory()->create()
         ];
