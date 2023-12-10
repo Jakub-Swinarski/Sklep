@@ -74,7 +74,7 @@ Route::prefix('category')->group(function () {
 Route::prefix('product')->group(function () {
     Route::get('/', [\App\Http\Controllers\ProductController::class, 'getProduct']);
     Route::get('/all', [\App\Http\Controllers\ProductController::class, 'getAllProducts']);
-    Route::middleware(['admin', 'auth'])->group(function () {
+    Route::middleware(['auth','admin' ])->group(function () {
         Route::post('/', [\App\Http\Controllers\ProductController::class, 'newProduct']);
         Route::put('/image', [\App\Http\Controllers\ProductController::class, 'newImage']);
         Route::delete('/image/delete', [\App\Http\Controllers\ProductController::class, 'deleteImage']);

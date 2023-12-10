@@ -19,7 +19,6 @@ class AdminAuth
         $user = auth()->user();
         if(!$user['is_admin'])
             abort(403,'Nie masz tu dostępu');
-
         return $next($request);
     }
 }
